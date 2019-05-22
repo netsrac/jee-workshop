@@ -13,27 +13,27 @@ public class JdbcExample {
 		try (Connection connection = DriverManager.getConnection("jdbc:h2:mem:test")) {
 			System.out.println("connection established!");
 
-			Statement statement = connection.createStatement();
+			try (Statement statement = connection.createStatement()) {
+				// TODO Erzeuge Tabelle(n)
+				statement.execute("create table ...");
 
-			// TODO Erzeuge Tabelle(n)
-			statement.execute("create table ...");
+				// TODO Befülle Tabelle(n)
+				statement.execute("insert into ...");
+				statement.execute("insert into ...");
+				statement.execute("insert into ...");
 
-			// TODO Befülle Tabelle(n)
-			statement.execute("insert into ...");
-			statement.execute("insert into ...");
-			statement.execute("insert into ...");
-
-			// TODO Stelle eine Anfrage an die Datenbank
-			ResultSet resultSet = statement.executeQuery("select ... from ... where ...");
-
-			System.out.println("----------------------------------------");
-			while (resultSet.next()) {
-				// TODO Zeige Ergebnisse an
-				int someInt = resultSet.getInt("...column name...");
-				String someString = resultSet.getString("...column name...");
-				System.out.println(someInt + " " + someString);
+				// TODO Stelle eine Anfrage an die Datenbank
+				try (ResultSet resultSet = statement.executeQuery("select ... from ... where ...")) {
+					// TODO Zeige Ergebnisse an
+					System.out.println("----------------------------------------");
+					while (resultSet.next()) {
+						int someInt = resultSet.getInt("...column name...");
+						String someString = resultSet.getString("...column name...");
+						System.out.println(someInt + " " + someString);
+					}
+					System.out.println("----------------------------------------");
+				}
 			}
-			System.out.println("----------------------------------------");
 		}
 	}
 }
