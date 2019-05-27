@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:body>
+
+<ui:fragment rendered="#{fredsBean.nixBestellt()}">
+	Pizza ohne alles???
+</ui:fragment>
+
+<ui:fragment rendered="#{!fredsBean.nixBestellt()}">
+	<ul>
+		<ui:repeat value="#{fredsBean.belaege}" var="belag">
+			<ui:fragment rendered="#{belag.bestellen}">
+				<li>#{belag.name}</li>
+			</ui:fragment>
+		</ui:repeat>
+	</ul>
+</ui:fragment>
+
+</h:body>
+</html>

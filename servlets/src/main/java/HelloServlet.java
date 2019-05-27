@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.text.StringEscapeUtils;
 
 @WebServlet("/")
 public class HelloServlet extends HttpServlet {
@@ -15,12 +16,27 @@ public class HelloServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try (PrintWriter out = response.getWriter()) {
 			out.println("<html><body>");
-			out.println("<h3>");
-			out.println(LocalDateTime.now());
-			out.println("</h3>");
+			out.println("<h3>Wie lautet dein Name?</h3>");
+			out.println("<form method='post'>");
+			out.println("Nachname:");
+			out.println("<input type='text' name='nachname'>");
+			out.println("Vorname:");
+			out.println("<input type='text' name='vorname'>");
+			out.println("<input type='submit' value='So heiße ich!'>");
+			out.println("</form>");
 			out.println("</body></html>");
 		}
 	}
 
-	private static final long serialVersionUID = -2345771005431135205L;
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try (PrintWriter out = response.getWriter()) {
+			out.println("<html><body>");
+			String nachname = StringEscapeUtils.escapeHtml4(request.getParameter("nachname"));
+			String vorname = StringEscapeUtils.escapeHtml4(request.getParameter("vorname"));
+			out.println("Herzlich willkommen, " + vorname + " " + nachname + "!");
+			out.println("</body></html>");
+		}
+	}
 }
